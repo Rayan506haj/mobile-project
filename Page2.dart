@@ -1,79 +1,92 @@
 import 'package:flutter/material.dart';
 import 'User.dart';
 import 'skinType.dart';
+import 'Page3.dart';
+
 class Page2 extends StatefulWidget {
   final User user;
   const Page2({Key? key, required this.user}) : super(key: key);
+
   @override
   State<Page2> createState() => _Page2State();
 }
 
 class _Page2State extends State<Page2> {
-  Skin skin = skins.first; // set the first car to be displayed
-  void updateSkin(Skin skin) {
+  Skin selectedSkin = skins[0];
+
+  void updateSkin(Skin newSkin) {
     setState(() {
-      this.skin = skin;
+      selectedSkin = newSkin;
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    final newUser = widget.user;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Skin_care Application",
-            style:TextStyle(
-                color: Colors.white70,
-                fontSize: 30
-            )
+        title: Text(
+          'Welcome, ${widget.user.name}!',
+          style: TextStyle(color: Colors.white70, fontSize: 24),
         ),
         backgroundColor: Colors.pink,
         centerTitle: true,
       ),
-      body: Center(child: Column(children: [
-
-          Row(
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/dry.jpg',height:250,width:500),
-            Image.asset('assets/acne.jpg',height:250,width:500),
-            ]),
+            Text(
+              'Select your skin type:',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
+              ),
+            ),
 
-        const SizedBox(height: 10),
-        Text('Welcome ${newUser.name}!',
-            style: const TextStyle( fontSize:29,  color:Colors.deepPurpleAccent),textAlign: TextAlign.center),
-        const SizedBox(height: 20.0),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset ('assets/dry.jpg',height:250,width:500),
-              Image.asset ('assets/acne.jpg',height:250,width:500),
-            ]),
-        const Text('Select Your Skin Type', style: TextStyle(fontSize: 25.0)), const SizedBox(height: 10.0),
-        MyDropdownMenuWidget(updateSkin: updateSkin), const SizedBox(height: 10.0),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Acne', style: TextStyle(fontSize: 18.0)),
-              Checkbox(value: skin.acne, onChanged: (bool? value) {
-                setState(() {
-                  skin.acne = value as bool;
-                });
-              }),
-              SizedBox(width: 20.0),
-              const Text('Allergy', style: TextStyle(fontSize: 18.0)),
-              Checkbox(value: skin.allergy, onChanged: (bool? value) {
-                setState(() {
-                  skin.allergy = value as bool;
-                });
-              })
+            const SizedBox(height: 30),
 
-            ]
+            MyDropdownMenuWidget(updateSkin: updateSkin),
+
+            const SizedBox(height: 40),
+
+            Text(
+              'You selected: ${selectedSkin.type}',
+              style: TextStyle(
+                fontSize: 22,
+                color: Colors.deepPurple,
+              ),
+            ),
+
+            const SizedBox(height: 40),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Page3(
+                      user: widget.user,
+                      selectedSkin: selectedSkin,
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.pink,
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+              ),
+              child: Text(
+                'Show Products',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
         ),
-
-      ]),
       ),
     );
   }
-
 }

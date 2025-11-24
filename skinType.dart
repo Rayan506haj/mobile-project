@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 class Skin {
   String type;
-  bool acne = false;
-  bool allergy=false;
+
 
   Skin(this.type);
   @override
